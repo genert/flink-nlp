@@ -1,15 +1,18 @@
 FROM flink:1.14.0-scala_2.12-java11
 ARG FLINK_VERSION=1.14.0
 
-# Install PyFlink
+# Install Python    
 RUN set -ex; \
     apt-get update; \
-    apt-get -y install python3; \
-    apt-get -y install python3-pip; \
-    apt-get -y install python3-dev; \
-    ln -s /usr/bin/python3 /usr/bin/python; \
-    python -m pip install --upgrade pip; \
-    pip install apache-flink==1.14.0;
+    apt-get install -y python3 python3-pip python3-dev; \
+    rm -rf /var/lib/apt/lists/*; \
+    ln -s /usr/bin/python3 /usr/bin/python;
+
+# Install PyFlink and Spacy
+RUN pip install -U pip setuptools wheel; \
+    pip install -U apache-flink==1.14.0; \
+    pip install -U spacy; \
+    python -m spacy download en_core_web_md;
 
 # Download connector libraries
 RUN wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector-jdbc_2.11/${FLINK_VERSION}/flink-connector-jdbc_2.11-${FLINK_VERSION}.jar
