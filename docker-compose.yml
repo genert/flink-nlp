@@ -13,6 +13,7 @@ services:
 
   jobmanager:
     build: .
+    image: pyflink/pyflink:1.13.1-scala_2.11
     container_name: jobmanager
     volumes:
       - ./job-nlp:/opt/job-nlp
@@ -24,6 +25,22 @@ services:
     command: jobmanager
     depends_on:
       - pulsar
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+  
+  taskmanager:
+    image: pyflink/pyflink:1.13.1-scala_2.11
+    container_name: taskmanager
+    volumes:
+      - ./job-nlp:/opt/job-nlp
+    expose:
+      - "6121"
+      - "6122"
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    links:
+      - jobmanager:jobmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
 

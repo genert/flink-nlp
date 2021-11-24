@@ -33,7 +33,7 @@ You should be able to access the Flink Web UI (http://localhost:8081).
 You’ll use the [Twitter Firehose built-in connector](https://pulsar.apache.org/docs/en/io-twitter-source) to consume tweets about `Belarus` into a Pulsar topic. To create the Twitter source, run:
 
 ```bash
-docker-compose exec pulsar ./bin/pulsar-admin source create \
+docker compose exec pulsar ./bin/pulsar-admin source create \
   --name twitter \
   --source-type twitter \
   --destinationTopicName tweets \
@@ -45,11 +45,19 @@ docker-compose exec pulsar ./bin/pulsar-admin source create \
 After creating the source, you can check that data is flowing into the `tweets` topic:
 
 ```bash
-docker-compose exec pulsar ./bin/pulsar-client consume -n 0 -r 0 -s test tweets
+docker compose exec pulsar ./bin/pulsar-client consume -n 0 -r 0 -s test tweets
 ```
 
 At any point, you can also [stop](https://pulsar.apache.org/docs/en/io-use/#stop-a-connector) the connector:
 
 ```bash
-docker-compose exec pulsar ./bin/pulsar-admin sources stop --name twitter
+docker compose exec pulsar ./bin/pulsar-admin sources stop --name twitter
+```
+
+## Analyzing the Twitter feed in real-time
+
+Submitting the PyFlink job
+
+```bash
+docker compose exec jobmanager ./bin/flink run -py /opt/job-nlp/main.py
 ```
