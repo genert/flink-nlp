@@ -1,5 +1,5 @@
-FROM flink:1.14.0-scala_2.12-java11
-ARG FLINK_VERSION=1.14.0
+FROM flink:1.13.1-scala_2.11-java11
+ARG FLINK_VERSION=1.13.1
 
 # Install Python    
 RUN set -ex; \
@@ -9,9 +9,9 @@ RUN set -ex; \
     ln -s /usr/bin/python3 /usr/bin/python;
 
 # Install PyFlink and Spacy
-RUN pip install -U pip setuptools wheel; \
-    pip install -U apache-flink==1.14.0; \
-    pip install -U spacy; \
+RUN pip3 install -U setuptools wheel; \
+    pip3 install -U apache-flink==1.13.1; \
+    pip3 install -U spacy; \
     python -m spacy download en_core_web_md;
 
 # Download connector libraries

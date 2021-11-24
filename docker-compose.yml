@@ -15,12 +15,23 @@ services:
     build: .
     container_name: jobmanager
     volumes:
-      - .:/opt/flink-nlp
+      - ./job-nlp:/opt/job-nlp
     hostname: "jobmanager"
     expose:
       - "6123"
     ports:
       - "8081:8081"
     command: jobmanager
+    depends_on:
+      - pulsar
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
+
+  sql-client:
+    build: ./sql-client
+    container_name: pulsar-sql-client
+    depends_on:
+      - pulsar
+      - jobmanager
+    environment:
+      FLINK_JOBMANAGER_HOST: jobmanager

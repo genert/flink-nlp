@@ -1,5 +1,15 @@
 # Flink NLP
 
+## Introduction
+
+In this playground, you will learn how to build and run an end-to-end PyFlink pipeline for data analytics, covering the following steps:
+
+    Reading data from a Pulsa source;
+    Creating data using a UDF;
+    Performing a simple aggregation over the source data;
+
+The environment is based on Docker Compose, so the only requirement is that you have [Docker](https://www.docker.com/) installed in your machine.
+
 ## Docker
 
 To keep things simple, the demo uses a Docker Compose setup that makes it easier to bundle up all the services you need.
