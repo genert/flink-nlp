@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   pulsar:
     image: apachepulsar/pulsar-all:2.8.1
@@ -6,9 +6,9 @@ services:
     environment:
       - BOOKIE_MEM=" -Xms512m -Xmx512m -XX:MaxDirectMemorySize=1g"
     ports:
-      - "8080:8080"
-      - "6650:6650"
-    command: ["bin/pulsar", "standalone"]
+      - '8080:8080'
+      - '6650:6650'
+    command: ['bin/pulsar', 'standalone']
     restart: unless-stopped
 
   jobmanager:
@@ -16,32 +16,34 @@ services:
     container_name: jobmanager
     volumes:
       - ./job-nlp:/opt/job-nlp
-    hostname: "jobmanager"
+    hostname: 'jobmanager'
     expose:
-      - "6123"
+      - '6123'
     ports:
-      - "8081:8081"
+      - '8081:8081'
     command: jobmanager
     depends_on:
       - pulsar
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    links:
+      - pulsar
 
   taskmanager:
-    image: flink:1.13.1
-    container_name: taskmanager
-    volumes:
-      - ./job-nlp:/opt/job-nlp
+    image: flink:1.13.1-scala_2.11
     expose:
-      - "6121"
-      - "6122"
+      - '6121'
+      - '6122'
     depends_on:
       - jobmanager
     command: taskmanager
-    links:
-      - jobmanager:jobmanager
+    volumes:
+      - ./job-nlp:/opt/job-nlp
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    links:
+      - jobmanager
+      - pulsar
 
   sql-client:
     build: ./sql-client
@@ -51,3 +53,6 @@ services:
       - jobmanager
     environment:
       FLINK_JOBMANAGER_HOST: jobmanager
+    links:
+      - jobmanager
+      - pulsar

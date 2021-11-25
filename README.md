@@ -16,6 +16,7 @@ To keep things simple, the demo uses a Docker Compose setup that makes it easier
 Getting the setup up and running
 
 ```bash
+docker network create flink-nlp
 docker compose build
 docker compose up -d
 ```
