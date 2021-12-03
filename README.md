@@ -31,14 +31,14 @@ You should be able to access the Flink Web UI (http://localhost:8081).
 
 ## Pulsar
 
-You’ll use the [Twitter Firehose built-in connector](https://pulsar.apache.org/docs/en/io-twitter-source) to consume tweets about `Belarus` into a Pulsar topic. To create the Twitter source, run:
+You’ll use the [Twitter Firehose built-in connector](https://pulsar.apache.org/docs/en/io-twitter-source) to consume tweets about `Palantir` into a Pulsar topic. To create the Twitter source, run:
 
 ```bash
 docker compose exec pulsar ./bin/pulsar-admin source create \
   --name twitter \
   --source-type twitter \
   --destinationTopicName tweets \
-  --source-config '{"consumerKey":<consumerKey>,"consumerSecret":<consumerSecret>,"token":<token>,"tokenSecret":<tokenSecret>, "terms":"Belarus"}'
+  --source-config '{"consumerKey":<consumerKey>,"consumerSecret":<consumerSecret>,"token":<token>,"tokenSecret":<tokenSecret>, "terms":"Palantir"}'
 ```
 
 > :information_source: This source requires a valid Twitter authentication token, which you can generate on the [Twitter Developer Portal](https://developer.twitter.com/en/docs/authentication/oauth-1-0a/obtaining-user-access-tokens).
@@ -60,5 +60,28 @@ docker compose exec pulsar ./bin/pulsar-admin sources stop --name twitter
 Submitting the PyFlink job
 
 ```bash
-docker compose exec jobmanager ./bin/flink run -py /opt/job-nlp/main.py
+docker compose exec jobmanager ./bin/flink run --python /opt/job-nlp/main.py --detached
+```
+
+## Flink SQL
+
+Next, you can start the Flink SQL Client:
+
+```bash
+docker-compose exec sql-client ./sql-client.sh
+```
+
+and use a [Pulsar catalog](https://github.com/streamnative/pulsar-flink#catalog) to access the topic directly as a table in Flink. This will make some things a lot easier afterwards, too!
+
+```sql
+CREATE CATALOG pulsar WITH (
+   'type' = 'pulsar',
+   'service-url' = 'pulsar://pulsar:6650',
+   'admin-url' = 'http://pulsar:8080',
+   'format' = 'json'
+);
+
+USE CATALOG pulsar;
+
+SHOW TABLES;
 ```
