@@ -53,6 +53,8 @@ services:
       - jobmanager
     environment:
       FLINK_JOBMANAGER_HOST: jobmanager
+    volumes:
+      - ./sql-client/client:/opt/sql-client/client
     links:
       - jobmanager
       - pulsar
