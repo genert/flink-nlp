@@ -22,7 +22,8 @@ RUN pip install -U spacy==${SPACY_VERSION}; \
 
 # 4. Download connector libraries
 RUN wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-json/${FLINK_VERSION}/flink-json-${FLINK_VERSION}.jar; \
-    wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-avro-confluent-registry/${FLINK_VERSION}/flink-sql-avro-confluent-registry-${FLINK_VERSION}.jar; \
+    wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-csv/${FLINK_VERSION}/flink-csv-${FLINK_VERSION}.jar; \
+    wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-avro/${FLINK_VERSION}/flink-sql-avro-${FLINK_VERSION}.jar; \
     wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector-jdbc_2.12/${FLINK_VERSION}/flink-connector-jdbc_2.12-${FLINK_VERSION}.jar; \
     wget -O /opt/flink/lib/pulsar-flink-sql-connector_2.12-1.13.1.4.jar https://search.maven.org/remotecontent?filepath=io/streamnative/connectors/pulsar-flink-sql-connector_2.12/1.13.1.4/pulsar-flink-sql-connector_2.12-1.13.1.4.jar
 
