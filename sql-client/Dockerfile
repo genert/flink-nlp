@@ -1,4 +1,4 @@
-FROM flink:1.13.3-scala_2.12-java11
+FROM flink:1.14.2-scala_2.12-java11
 ARG FLINK_VERSION=1.13.3
 
 # Download connector libraries
