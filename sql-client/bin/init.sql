@@ -1,13 +1,5 @@
 -- Define available catalogs
 
-CREATE CATALOG pulsar WITH (
-   'type' = 'pulsar',
-   'service-url' = 'pulsar://pulsar:6650',
-   'admin-url' = 'http://pulsar:8080',
-   'format' = 'json'
-);
-
-USE CATALOG pulsar;
 
 -- Properties that change the fundamental execution behavior of a table program.
 

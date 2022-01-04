@@ -1,6 +1,7 @@
-FROM flink:1.13.3-scala_2.12-java11
-ARG FLINK_VERSION=1.13.3
+FROM flink:1.14.2-scala_2.12
+ARG FLINK_VERSION=1.14.2
 ARG SPACY_VERSION=3.2.0
+ARG SCALA_BINARY_VERSION=2.12
 
 # 1. Setup Conda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh -O ~/miniconda.sh && \
@@ -24,8 +25,11 @@ RUN pip install -U spacy==${SPACY_VERSION}; \
 RUN wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-json/${FLINK_VERSION}/flink-json-${FLINK_VERSION}.jar; \
     wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-csv/${FLINK_VERSION}/flink-csv-${FLINK_VERSION}.jar; \
     wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-avro/${FLINK_VERSION}/flink-sql-avro-${FLINK_VERSION}.jar; \
-    wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector-jdbc_2.12/${FLINK_VERSION}/flink-connector-jdbc_2.12-${FLINK_VERSION}.jar; \
-    wget -O /opt/flink/lib/pulsar-flink-sql-connector_2.12-1.13.1.4.jar https://search.maven.org/remotecontent?filepath=io/streamnative/connectors/pulsar-flink-sql-connector_2.12/1.13.1.4/pulsar-flink-sql-connector_2.12-1.13.1.4.jar
+    wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-avro-confluent-registry/${FLINK_VERSION}/flink-sql-avro-confluent-registry-${FLINK_VERSION}.jar; \
+    wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-parquet_${SCALA_BINARY_VERSION}/${FLINK_VERSION}/flink-sql-parquet_${SCALA_BINARY_VERSION}-${FLINK_VERSION}.jar; \
+    wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector-jdbc_${SCALA_BINARY_VERSION}/${FLINK_VERSION}/flink-connector-jdbc_${SCALA_BINARY_VERSION}-${FLINK_VERSION}.jar; \
+    wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector-kafka_${SCALA_BINARY_VERSION}/${FLINK_VERSION}/flink-connector-kafka_${SCALA_BINARY_VERSION}-${FLINK_VERSION}.jar; \
+    wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector-pulsar_${SCALA_BINARY_VERSION}/${FLINK_VERSION}/flink-connector-pulsar_${SCALA_BINARY_VERSION}-${FLINK_VERSION}.jar
 
 # 5. Configure Flink
 RUN echo "taskmanager.memory.jvm-metaspace.size: 512m" >> /opt/flink/conf/flink-conf.yaml;
